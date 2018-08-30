@@ -17,7 +17,11 @@
 
 % \documentclass[12pt, french]{article}
 
-\documentclass[12pt, french]{beamer}
+\documentclass[french]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
 
 \mode<presentation> {
 
@@ -81,6 +85,35 @@
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 
+\usepackage{tikz}
+\usetikzlibrary{calc,decorations.markings}
+
+\usetikzlibrary{arrows}
+
+\usepackage{tkz-graph}
+% \GraphInit[vstyle = Shade]
+\tikzset{
+	LabelStyle/.style = { rectangle, rounded corners, draw,
+		minimum width = 2em, fill = yellow!50,
+		text = red, font = \bfseries },
+	VertexStyle/.append style = { inner sep=5pt,
+		font = \Large\bfseries},
+	%	EdgeStyle/.append style = {->, bend left} % by default graphs are non-oriented. Individually: put this line on to make them oriented.
+}
+
+\tikzset{
+	treenode/.style = {align=center, inner sep=0pt, text centered,
+		font=\sffamily},
+	arn_n/.style = {treenode, circle, black, font=\sffamily\bfseries, draw=black,
+		fill=white, text width=2em},% arbre rouge noir, noeud noir
+	arn_r/.style = {treenode, circle, red, draw=red, 
+		text width=1.5em, very thick},% arbre rouge noir, noeud rouge
+	arn_x/.style = {treenode, rectangle, draw=black,
+		minimum width=0.5em, minimum height=0.5em}% arbre rouge noir, nil
+}
+
+\usepackage{dingbat}
+
 \newcommand{\states}{\ensuremath{\big.{S}}}
 \newcommand{\actions}{\ensuremath{\big.{A}}}
 
@@ -91,14 +124,14 @@
 \title[Parcours, Août 2018]{Parcours} % The short title appears at the bottom of every slide, the full title is only on the title page
 \subtitle{On en est où?}
 
-\author{Bla bla Équipe TESD} % Your name
+\author{Équipe TESD} % Your name
 \institute[CRIM] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
 {
 CRIM \\ % Your institution for the title page
 \medskip
 \textit{prenom.nom@crim.ca} % Your email address
 }
-\date{\today} % Date, can be changed to a custom date
+\date{31 Août 2018} % Date, can be changed to a custom date
 
 \begin{document}
 
@@ -116,32 +149,79 @@ CRIM \\ % Your institution for the title page
 %----------------------------------------------------------------------------------------
 
 %------------------------------------------------
-\section{C'est quoi, apprentissage par renforcement?} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
+\section{Main} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
 %------------------------------------------------
 
-\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+\subsection{Main} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
 
 
 \begin{frame}
-\frametitle{Apprentissage par Renforcement}
+\frametitle{Définition du Problème}
 
-Un agent vit dans un \textit{environnement}, sur lequel il \textit{agit} et duquel il recolte des \textit{recompenses}.
-
-\begin{block}{C'est quoi, le probleme?}
-	comment choisir les meilleures actions a chaque instant de temps de sorte a...
 	\begin{itemize}
-		\item maximiser une recompense cumulee?
-		\item maximiser une recompense future?
+		\item VdM: améliorer l'efficacité opérationnelle des parcours des véhicule+ minimiser l'impact de leur déplacement. 
+			\begin{itemize}
+				\item découpage du territoire
+				\item couverture optimale du territoire
+			\end{itemize}
+		\item modélisation: problèmes réels $\Longrightarrow$ problèmes de tournées de véhicules
+			\begin{itemize}
+				\item Demandes sur les nœuds? VRPs!
+				\item Demandes sur les arcs? ARPs!
+			\end{itemize}
+	\end{itemize}
+
+%\begin{figure}[!htb]
+%	\centering
+
+\begin{tikzpicture}[scale=0.750]
+\SetGraphUnit{5}
+\Vertex{A}
+\Vertex[x=2,y=2]{B}
+\Vertex[x=6,y=2]{C}
+\Vertex[x=10,y=2]{D}
+\Vertex[x=4,y=-2]{E}
+\Edge[label = 10](A)(B)
+\Edge[label = 10](B)(C)
+\Edge[label = 7](C)(D)
+\Edge[label = 20](D)(E)
+\Edge[label = 8](E)(A)
+\tikzset{
+	EdgeStyle/.append style = {bend left} 
+}
+\Edge[label = 12](C)(E)
+\Edge[label = 15](C)(A)
+\tikzset{
+	EdgeStyle/.append style = {bend right} 
+}
+% \Edge[label = 14](B)(E)
+\end{tikzpicture}
+%\end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{On en est où?}
+
+\begin{block}{En général: problème est un ARP: bibliographie}
+	\begin{itemize}
+		\item Algorithmes? \checkmark
+		\item Sectorisation? \checkmark
+		\item Modèles de données? \checkmark
 	\end{itemize}
 \end{block}
 
-\begin{block}{Parties}
+\begin{block}{VdM (I): Sectorisation}
+	Proposition de combinaison de mesures pour modéliser une grande gamme de problèmes. 
+	Mesures de base:
 	\begin{itemize}
-	\item Etats de l'environnement, \states
-	\item Actions admissibles a l'agent, \actions
-	\item une fonction de recompense, $\big.{R}: (\states, \actions) \rightarrow \mathbb{R}$
-	\item une fonction de transition, ou \textit{politique}, $\pi: \states \rightarrow \actions $
-\end{itemize}
+		\item Équilibre
+		\item Adjacence
+		\item Compacité
+		\item Désirabilité
+	\end{itemize}
 \end{block}
 
 
@@ -150,46 +230,24 @@ Un agent vit dans un \textit{environnement}, sur lequel il \textit{agit} et duqu
 %------------------------------------------------
 
 \begin{frame}
-\frametitle{Donc, on a un MDP, defini par $\{ \states, \actions, \big.{R}, \pi  \}$}
+\frametitle{On en est où? (ct'd)}
 
-Objectif: trouver $\pi^*$, la politique optimale.
-
-\begin{block}{Idee(s) Conductrice(s)}
-	\begin{itemize}
-		\item Regardons $\pi$ comme une fonction de probabilite, $\pi(a | s)$
-		\item Encore mieux: $\pi(a | s; \theta)$, et la on peut choisir/iterer sur $\theta$
-		\item Trajectoire: $s_0,a_0,r_1,s_1,a_1,r_2,\ldots,s_{T-1},a_{T-1},r_T$
-		\item Recompense cumulee: $R_T = r_1 + r_2 + \ldots + r_T = \sum_{i=1}^{T}{r_i}$
-		\item ou, avec \textit{discount}, $\gamma \in (0, 1]$: $R_T = r_1 + \gamma * r_2 + \ldots + \gamma^{T - 1} * r_T = \sum_{i=1}^{T}\gamma^{T - 1} * {r_i}$
-	\end{itemize}
-\end{block}
-
-\begin{block}{Methodes de Gradients de la Politique}
-	Choisir $\theta$ tel que maximiser $\mathbb{E}(R_T | \pi; \theta)$: ca revient a calculer $\nabla_\theta \mathbb{E}(R_T | \pi; \theta)$, ou, iterativement, $\theta \leftarrow \theta + \alpha * \nabla_\theta \mathbb{E}(R_T | \pi; \theta)$
-\end{block}
-
-
-\end{frame}
-
-%------------------------------------------------
-
-
-\begin{frame}
-\frametitle{Un (petit) peu de maths}
-
-Donc, on veut faire $\theta \leftarrow \theta + \alpha * \nabla_\theta \mathbb{E}(R_T | \pi; \theta)$
-
-\begin{block}{ok... $\nabla_\theta \mathbb{E}(R_T | \pi; \theta)$ ...?}
-	On peut montrer que $\nabla_\theta \mathbb{E}(R_T | \pi; \theta)$ peut se calculer comme la valeur esperee de $\big.{R}_T * \nabla_\theta \sum_{t=0}^{T-1} \log{\pi(a_t | s_t;\theta)} $
-	Ca fournit une methode de calcul.
-\end{block}
-
-\begin{block}{A3C}
-	Deux trucs:
+\begin{block}{VdM (II): Modèles de Données}
+	Étude de différents modèles, impressions sur page Excel. 
+	
+	Spécification de nos besoins:
 	\begin{enumerate}
-		\item $R_T$: utilisation d'une fonction d'avantage: quel est l'avantage de prendre une certaine action $a$ dans un etat $s$ ?
-		\item Calculs asynchrones, distincts, et paralleles
+		\item Pour chaque route (arc): quelles sont les voies qui y circulent, incluant la forme et la limite de vitesse de chacune.
+		\item Sur les intersections:
+		\begin{enumerate}
+			\item Leur géo-localisation.
+			\item La logique des feux de circulation.
+			\item La priorité des véhicules qu s'y engagent.
+		\end{enumerate}
+		\item Districts.
+		\item Descriptions des rond-points.
 	\end{enumerate}
+	+ d'un format XML pour communication.
 \end{block}
 
 
@@ -197,15 +255,6 @@ Donc, on veut faire $\theta \leftarrow \theta + \alpha * \nabla_\theta \mathbb{E
 
 %------------------------------------------------
 
-\begin{frame}
-\frametitle{On en est ou?}
-
-\begin{itemize}
-	\item A comprendre cet algo
-	\item Est-ce qu'on peut l'utiliser pour fournir des routes optimales?
-	\item ...Dans des problemes d'optimisation combinatoire, en general...?
-\end{itemize}
-\end{frame}
 
 %------------------------------------------------
 
