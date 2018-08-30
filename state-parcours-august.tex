@@ -1,0 +1,216 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass{beamer}
+
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+
+\newcommand{\states}{\ensuremath{\big.{S}}}
+\newcommand{\actions}{\ensuremath{\big.{A}}}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Parcours, Août 2018]{Parcours} % The short title appears at the bottom of every slide, the full title is only on the title page
+\subtitle{On en est où?}
+
+\author{Équipe TESD} % Your name
+\institute[CRIM] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+CRIM \\ % Your institution for the title page
+\medskip
+\textit{prenom.nom@crim.ca} % Your email address
+}
+\date{\today} % Date, can be changed to a custom date
+
+\begin{document}
+
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+% \begin{frame}
+% \frametitle{Overview} % Table of contents slide, comment this block out to remove it
+% \tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+% \end{frame}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+%------------------------------------------------
+\section{C'est quoi, apprentissage par renforcement?} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
+%------------------------------------------------
+
+\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+
+
+\begin{frame}
+\frametitle{Apprentissage par Renforcement}
+
+Un agent vit dans un \textit{environnement}, sur lequel il \textit{agit} et duquel il recolte des \textit{recompenses}.
+
+\begin{block}{C'est quoi, le probleme?}
+	comment choisir les meilleures actions a chaque instant de temps de sorte a...
+	\begin{itemize}
+		\item maximiser une recompense cumulee?
+		\item maximiser une recompense future?
+	\end{itemize}
+\end{block}
+
+\begin{block}{Parties}
+	\begin{itemize}
+	\item Etats de l'environnement, \states
+	\item Actions admissibles a l'agent, \actions
+	\item une fonction de recompense, $\big.{R}: (\states, \actions) \rightarrow \mathbb{R}$
+	\item une fonction de transition, ou \textit{politique}, $\pi: \states \rightarrow \actions $
+\end{itemize}
+\end{block}
+
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Donc, on a un MDP, defini par $\{ \states, \actions, \big.{R}, \pi  \}$}
+
+Objectif: trouver $\pi^*$, la politique optimale.
+
+\begin{block}{Idee(s) Conductrice(s)}
+	\begin{itemize}
+		\item Regardons $\pi$ comme une fonction de probabilite, $\pi(a | s)$
+		\item Encore mieux: $\pi(a | s; \theta)$, et la on peut choisir/iterer sur $\theta$
+		\item Trajectoire: $s_0,a_0,r_1,s_1,a_1,r_2,\ldots,s_{T-1},a_{T-1},r_T$
+		\item Recompense cumulee: $R_T = r_1 + r_2 + \ldots + r_T = \sum_{i=1}^{T}{r_i}$
+		\item ou, avec \textit{discount}, $\gamma \in (0, 1]$: $R_T = r_1 + \gamma * r_2 + \ldots + \gamma^{T - 1} * r_T = \sum_{i=1}^{T}\gamma^{T - 1} * {r_i}$
+	\end{itemize}
+\end{block}
+
+\begin{block}{Methodes de Gradients de la Politique}
+	Choisir $\theta$ tel que maximiser $\mathbb{E}(R_T | \pi; \theta)$: ca revient a calculer $\nabla_\theta \mathbb{E}(R_T | \pi; \theta)$, ou, iterativement, $\theta \leftarrow \theta + \alpha * \nabla_\theta \mathbb{E}(R_T | \pi; \theta)$
+\end{block}
+
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\begin{frame}
+\frametitle{Un (petit) peu de maths}
+
+Donc, on veut faire $\theta \leftarrow \theta + \alpha * \nabla_\theta \mathbb{E}(R_T | \pi; \theta)$
+
+\begin{block}{ok... $\nabla_\theta \mathbb{E}(R_T | \pi; \theta)$ ...?}
+	On peut montrer que $\nabla_\theta \mathbb{E}(R_T | \pi; \theta)$ peut se calculer comme la valeur esperee de $\big.{R}_T * \nabla_\theta \sum_{t=0}^{T-1} \log{\pi(a_t | s_t;\theta)} $
+	Ca fournit une methode de calcul.
+\end{block}
+
+\begin{block}{A3C}
+	Deux trucs:
+	\begin{enumerate}
+		\item $R_T$: utilisation d'une fonction d'avantage: quel est l'avantage de prendre une certaine action $a$ dans un etat $s$ ?
+		\item Calculs asynchrones, distincts, et paralleles
+	\end{enumerate}
+\end{block}
+
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{On en est ou?}
+
+\begin{itemize}
+	\item A comprendre cet algo
+	\item Est-ce qu'on peut l'utiliser pour fournir des routes optimales?
+	\item ...Dans des problemes d'optimisation combinatoire, en general...?
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\Huge{\centerline{The End}}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
