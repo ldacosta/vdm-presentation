@@ -135,7 +135,7 @@ CRIM \\ % Your institution for the title page
 
 \begin{document}
 
-\begin{frame}
+\begin{frame}[label=firstframe]
 \titlepage % Print the title page as the first slide
 \end{frame}
 
@@ -207,21 +207,21 @@ CRIM \\ % Your institution for the title page
 
 \begin{block}{En général: problème est un ARP: bibliographie}
 	\begin{itemize}
-		\item Algorithmes? \checkmark
-		\item Sectorisation? \checkmark
-		\item Modèles de données? \checkmark
+		\item Cadre mathématique? \checkmark: $100\%$
+		\item Algorithmes? \checkmark: $25\%$
+		\item Sectorisation? \checkmark: $100\%$
+		\item Modèles de données? \checkmark: $100\%$
 	\end{itemize}
 \end{block}
 
-\begin{block}{VdM (I): Sectorisation}
-	Proposition de combinaison de mesures pour modéliser une grande gamme de problèmes. 
-	Mesures de base:
-	\begin{itemize}
+\begin{block}{VdM (I): Sectorisation \checkmark}
+	Proposition de combinaison de mesures pour modéliser une grande gamme de problèmes, basé sur 4 mesures atomiques:
+	\begin{enumerate}
 		\item Équilibre
 		\item Adjacence
 		\item Compacité
 		\item Désirabilité
-	\end{itemize}
+	\end{enumerate}
 \end{block}
 
 
@@ -233,21 +233,22 @@ CRIM \\ % Your institution for the title page
 \frametitle{On en est où? (ct'd)}
 
 \begin{block}{VdM (II): Modèles de Données}
-	Étude de différents modèles, impressions sur page Excel. 
-	
-	Spécification de nos besoins:
 	\begin{enumerate}
-		\item Pour chaque route (arc): quelles sont les voies qui y circulent, incluant la forme et la limite de vitesse de chacune.
-		\item Sur les intersections:
+		\item Étude de différents modèles, \href{https://docs.google.com/spreadsheets/d/1S1ONNvS4FIHuxg2S6RaSjKU0ZRDhi068NiHiJ_x56pI/edit#gid=0}{détails ici}: \checkmark $50\%$
+		\item Spécification de nos besoins (+ d'un format XML pour communication): \checkmark
 		\begin{enumerate}
-			\item Leur géo-localisation.
-			\item La logique des feux de circulation.
-			\item La priorité des véhicules qu s'y engagent.
+			\item Pour chaque route (arc): quelles sont les voies qui y circulent, incluant la forme et la limite de vitesse de chacune.
+			\item Sur les intersections:
+			\begin{enumerate}
+				\item Leur géo-localisation.
+				\item La logique des feux de circulation.
+				\item La priorité des véhicules qu s'y engagent.
+			\end{enumerate}
+			\item Districts.
+			\item Descriptions des rond-points.
 		\end{enumerate}
-		\item Districts.
-		\item Descriptions des rond-points.
+		
 	\end{enumerate}
-	+ d'un format XML pour communication.
 \end{block}
 
 
@@ -255,13 +256,8 @@ CRIM \\ % Your institution for the title page
 
 %------------------------------------------------
 
-
+\againframe{firstframe}
 %------------------------------------------------
 
-\begin{frame}
-\Huge{\centerline{The End}}
-\end{frame}
-
-%----------------------------------------------------------------------------------------
 
 \end{document}
